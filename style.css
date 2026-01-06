@@ -1,0 +1,198 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #e8e8e8;
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #1a1a1a;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* CRT scanlines overlay */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.1),
+        rgba(0, 0, 0, 0.1) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    z-index: 9998;
+}
+
+.terminal {
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+}
+
+.output {
+    margin-bottom: 10px;
+}
+
+.output-line {
+    margin-bottom: 4px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.output-line.command {
+    color: #1a1a1a;
+}
+
+.output-line.command::before {
+    content: '> ';
+    color: #666;
+}
+
+.output-line.response {
+    color: #444;
+    padding-left: 20px;
+}
+
+.input-line {
+    display: flex;
+    align-items: flex-start;
+}
+
+.prompt {
+    color: #666;
+    margin-right: 8px;
+    user-select: none;
+}
+
+.input-wrapper {
+    flex: 1;
+    position: relative;
+    min-width: 0;
+}
+
+.input-display {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+.cursor {
+    display: inline-block;
+    width: 10px;
+    height: 1.2em;
+    background-color: #1a1a1a;
+    animation: blink 1s step-end infinite;
+    vertical-align: text-bottom;
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+.hidden-input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+}
+
+/* Matrix effect overlay */
+.matrix-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+.matrix-overlay canvas {
+    width: 100%;
+    height: 100%;
+}
+
+/* VHS glitch effect for rm -rf */
+.glitch .terminal {
+    animation: vhs-glitch 0.2s infinite;
+    text-shadow:
+        2px 0 rgba(255, 0, 0, 0.7),
+        -2px 0 rgba(0, 255, 255, 0.7);
+}
+
+.glitch::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.1) 2px,
+        rgba(0, 0, 0, 0.1) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+    animation: vhs-noise 0.5s infinite;
+}
+
+@keyframes vhs-glitch {
+    0% { clip-path: inset(40% 0 60% 0); transform: skewX(0deg); }
+    10% { clip-path: inset(10% 0 85% 0); transform: skewX(2deg); }
+    20% { clip-path: inset(80% 0 5% 0); transform: skewX(-1deg); }
+    30% { clip-path: inset(20% 0 70% 0); transform: skewX(0deg); }
+    40% { clip-path: inset(60% 0 30% 0); transform: skewX(1deg); }
+    50% { clip-path: inset(0% 0 90% 0); transform: skewX(-2deg); }
+    60% { clip-path: inset(70% 0 20% 0); transform: skewX(0deg); }
+    70% { clip-path: inset(5% 0 80% 0); transform: skewX(1deg); }
+    80% { clip-path: inset(50% 0 40% 0); transform: skewX(-1deg); }
+    90% { clip-path: inset(30% 0 60% 0); transform: skewX(0deg); }
+    100% { clip-path: inset(40% 0 60% 0); transform: skewX(0deg); }
+}
+
+@keyframes vhs-noise {
+    0% { opacity: 0.8; }
+    50% { opacity: 0.5; }
+    100% { opacity: 0.8; }
+}
+
+.corrupted {
+    background: #000 !important;
+    color: #f00 !important;
+}
+
+.corrupted .terminal {
+    opacity: 0.9;
+    transform: skewX(2deg);
+}
+
+.corrupted::after {
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(255, 0, 0, 0.1),
+        rgba(255, 0, 0, 0.1) 1px,
+        transparent 1px,
+        transparent 2px
+    ) !important;
+}
